@@ -1,0 +1,27 @@
+[submodule "ansible/roles/os-db"]
+	path = ansible/roles/os-db
+	url = https://github.com/Nosmoht/ansible-openstack-database.git
+[submodule "ansible/roles/os-common"]
+	path = ansible/roles/os-common
+	url = https://github.com/Nosmoht/ansible-openstack-common.git
+[submodule "ansible/roles/mariadb"]
+	path = ansible/roles/mariadb
+	url = https://github.com/Nosmoht/ansible-mariadb.git
+[submodule "ansible/roles/os-network"]
+	path = ansible/roles/os-network
+	url = https://github.com/Nosmoht/ansible-openstack-network.git
+[submodule "ansible/roles/os-compute"]
+	path = ansible/roles/os-compute
+	url = https://github.com/Nosmoht/ansible-openstack-compute.git
+[submodule "ansible/roles/os-controller"]
+	path = ansible/roles/os-controller
+	url = https://github.com/Nosmoht/ansible-openstack-controller.git
+[submodule "ansible/roles/ntp"]
+	path = ansible/roles/ntp
+	url = https://github.com/Nosmoht/ansible-ntp.git
+[submodule "ansible/roles/rabbitmq"]
+	path = ansible/roles/rabbitmq
+	url = https://github.com/Nosmoht/ansible-rabbitmq.git
+[submodule "ansible/roles/os-keystone"]
+	path = ansible/roles/os-keystone
+	url = https://github.com/Nosmoht/ansible-openstack-keystone.git
