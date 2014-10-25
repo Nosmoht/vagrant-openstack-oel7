@@ -1,0 +1,13 @@
+---
+- hosts: os-db
+  roles:
+  - role: os-db
+- hosts: os-controller
+  roles:
+  - role: os-controller
+- hosts: os-compute
+  roles:
+  - role: os-compute
+- hosts: os-network
+  roles:
+  - role: os-network
