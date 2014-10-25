@@ -1,0 +1,3 @@
+[openstack:vars]
+openstack_database_node_name: os-db-01
+openstack_controller_node_name: os-ctrl-01
