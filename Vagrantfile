@@ -7,11 +7,11 @@ VAGRANTFILE_API_VERSION = "2"
 domain = "example.com"
 
 boxes = [
-	{ :name => 'os-db-01',		:management_ip => '10.0.0.12', :cpus => 1, :memory =>  512 },
-	{ :name => 'os-ctrl-01',	:management_ip => '10.0.0.11', :cpus => 1, :memory => 2048 },
-	{ :name => 'os-neutron-01',	:management_ip => '10.0.0.21', :cpus => 1, :memory =>  512, :tunnel_ip => '10.0.1.21', :external_net => true },
-	{ :name => 'os-nova-01', 	:management_ip => '10.0.0.31', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.31' },
-	{ :name => 'os-nova-02',	:management_ip => '10.0.0.41', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.41' },
+	{ :name => 'os-db-01',		:role => 'os-db',			:management_ip => '10.0.0.12', :cpus => 1, :memory =>  512 },
+	{ :name => 'os-ctrl-01',	:role => 'os-controller',	:management_ip => '10.0.0.11', :cpus => 1, :memory => 2048 },
+	{ :name => 'os-neutron-01',	:role => 'os-network',		:management_ip => '10.0.0.21', :cpus => 1, :memory =>  512, :tunnel_ip => '10.0.1.21', :external_net => true },
+	{ :name => 'os-nova-01', 	:role => 'os-compute',		:management_ip => '10.0.0.31', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.31' },
+	{ :name => 'os-nova-02',	:role => 'os-compute',		:management_ip => '10.0.0.41', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.41' },
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -24,8 +24,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	else
 		puts "[-] WARN: This would be much faster if you ran 'vagrant plugin install vagrant-cachier' first"
 	end
-
-#  config.vbguest.auto_update = true
 
 	boxes.each do |opts|
 		config.vm.define opts[:name] do |config|
@@ -49,7 +47,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			config.vm.synced_folder "root/.ssh", "/root/.ssh", owner: "root", group: "root"
 			config.vm.provision :hosts
 			config.vm.provision :shell, :path => 'common.sh'
-			config.vm.provision :shell, :path => opts[:shell] if opts[:shell]
+
+			#Fix for Ansible bug resulting in an encoding error
+			ENV['PYTHONIOENCODING'] = "utf-8"
+			config.vm.provision "ansible" do |ansible|
+				ansible.limit = "#{opts[:role]}"
+				ansible.playbook = "ansible/openstack.yml"
+				ansible.inventory_path = "ansible/hosts"
+			end
 	    end
 	end
 end
