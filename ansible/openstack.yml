@@ -1,4 +1,7 @@
 ---
+- hosts: all
+  roles: 
+  - role: os-common
 - hosts: os-db
   roles:
   - role: os-db
