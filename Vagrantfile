@@ -15,9 +15,13 @@ boxes = [
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-	unless Vagrant.has_plugin?("vagrant-hosts")
-		raise 'Plugin not found. Run: vagrant plugin install vagrant-hosts'
+	unless Vagrant.has_plugin?("vagrant-hostmanager")
+		raise 'Plugin not found. Run: vagrant plugin install vagrant-hostmanager'
 	end
+	config.hostmanager.enabled = true
+	config.hostmanager.manage_host = true
+	config.hostmanager.ignore_private_ip = false
+
 	if Vagrant.has_plugin?("vagrant-cachier")
 		config.cache.scope = :box
 		config.cache.enable :yum
@@ -27,10 +31,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	boxes.each do |opts|
 		config.vm.define opts[:name] do |config|
+			hostname = "#{opts[:name]}.#{domain}"
 			config.vm.box = "ntbc-oel7"
 			# Following doesn't work so use: vagrant box add ntbc-oel65 https://www.dropbox.com/l/aWt8kMbMXJqdGFNEXPncXo
 			#config.vm.box_url = "https://www.dropbox.com/l/aWt8kMbMXJqdGFNEXPncXo"
-			config.vm.hostname = "#{opts[:name]}.#{domain}"
+			config.vm.hostname = "#{hostname}"
 			config.vm.network :private_network, ip: opts[:management_ip]
 			if opts[:tunnel_ip] 
 				config.vm.network :private_network, ip: opts[:tunnel_ip]
@@ -45,13 +50,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 				end
 			end
 			config.vm.synced_folder "root/.ssh", "/root/.ssh", owner: "root", group: "root"
-			config.vm.provision :hosts
 			config.vm.provision :shell, :path => 'common.sh'
 
 			#Fix for Ansible bug resulting in an encoding error
 			ENV['PYTHONIOENCODING'] = "utf-8"
 			config.vm.provision "ansible" do |ansible|
-				ansible.limit = "#{opts[:role]}"
+				ansible.limit = "#{hostname}"
 				ansible.playbook = "ansible/openstack.yml"
 				ansible.inventory_path = "ansible/hosts"
 			end
