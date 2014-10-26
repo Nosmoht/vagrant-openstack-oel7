@@ -7,11 +7,11 @@ VAGRANTFILE_API_VERSION = "2"
 domain = "example.com"
 
 boxes = [
-	{ :name => 'os-db-01',		:role => 'os-db',			:management_ip => '10.0.0.12', :cpus => 1, :memory =>  512 },
-	{ :name => 'os-ctrl-01',	:role => 'os-controller',	:management_ip => '10.0.0.11', :cpus => 1, :memory => 2048 },
-	{ :name => 'os-neutron-01',	:role => 'os-network',		:management_ip => '10.0.0.21', :cpus => 1, :memory =>  512, :tunnel_ip => '10.0.1.21', :external_net => true },
-	{ :name => 'os-nova-01', 	:role => 'os-compute',		:management_ip => '10.0.0.31', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.31' },
-	{ :name => 'os-nova-02',	:role => 'os-compute',		:management_ip => '10.0.0.41', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.41' },
+	{ :name => 'os-db-01',		:management_ip => '10.0.0.12', :cpus => 1, :memory =>  512 },
+	{ :name => 'os-ctrl-01',	:management_ip => '10.0.0.11', :cpus => 1, :memory => 2048 },
+	{ :name => 'os-neutron-01',	:management_ip => '10.0.0.21', :cpus => 1, :memory =>  512, :tunnel_ip => '10.0.1.21', :external_net => true },
+	{ :name => 'os-nova-01', 	:management_ip => '10.0.0.31', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.31' },
+	{ :name => 'os-nova-02',	:management_ip => '10.0.0.41', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.41' },
 ]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			# Following doesn't work so use: vagrant box add ntbc-oel65 https://www.dropbox.com/l/aWt8kMbMXJqdGFNEXPncXo
 			#config.vm.box_url = "https://www.dropbox.com/l/aWt8kMbMXJqdGFNEXPncXo"
 			config.vm.hostname = "#{hostname}"
+			config.hostmanager.aliases = "#{opts[:name]}"
 			config.vm.network :private_network, ip: opts[:management_ip]
 			if opts[:tunnel_ip] 
 				config.vm.network :private_network, ip: opts[:tunnel_ip]
@@ -55,7 +56,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 			#Fix for Ansible bug resulting in an encoding error
 			ENV['PYTHONIOENCODING'] = "utf-8"
 			config.vm.provision "ansible" do |ansible|
-				ansible.limit = "#{hostname}"
+				ansible.limit = "#{opts[:name]}"
 				ansible.playbook = "ansible/openstack.yml"
 				ansible.inventory_path = "ansible/hosts"
 			end
