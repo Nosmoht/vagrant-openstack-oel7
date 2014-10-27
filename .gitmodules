@@ -25,3 +25,6 @@
 [submodule "ansible/roles/os-keystone"]
 	path = ansible/roles/os-keystone
 	url = https://github.com/Nosmoht/ansible-openstack-keystone.git
+[submodule "ansible/os-glance"]
+	path = ansible/os-glance
+	url = https://github.com/Nosmoht/ansible-openstack-glance.git
