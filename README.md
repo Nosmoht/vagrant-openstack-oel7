@@ -13,10 +13,12 @@ vagrant up
 
 Hosts
 -----
-* os-db-01		Database node running MariaDB
-* os-ctrl-01		Controller node running Openstack Keystone and RabbitMQ
-* os-neutron-01	Network node running Openstack Neutron service
-* os-nova-0[1:2]	Compute node running Openstack Nova service
+| hostname      | ip address | Openstack Role  | Services 		       |
+| ------------- | ---------- | --------------- | --------------------- |
+| os-db-01		| 10.0.0.12  | Database node   | MariaDB  			   |
+| os-ctrl-01	| 10.0.0.11  | Controller node | Keystone and RabbitMQ |
+| os-neutron-01	| 10.0.0.21  | Network         | Neutron               |
+| os-nova-01    | 10.0.0.31  | Compute		   | Nova				   |
 
 Open Issues
 -----------
