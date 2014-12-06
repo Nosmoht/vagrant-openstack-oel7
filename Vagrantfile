@@ -7,8 +7,9 @@ VAGRANTFILE_API_VERSION = "2"
 domain = "example.com"
 
 boxes = [
-	{ :name => 'os-db-01',		:management_ip => '10.0.0.12', :cpus => 1, :memory =>  512 },
-	{ :name => 'os-ctrl-01',	:management_ip => '10.0.0.11', :cpus => 1, :memory => 2048 },
+	{ :name => 'os-db-01',		:management_ip => '10.0.0.10', :cpus => 1, :memory => 1024 },
+	{ :name => 'os-mq-01',		:management_ip => '10.0.0.11', :cpus => 1, :memory => 1024 },
+	{ :name => 'os-ctrl-01',	:management_ip => '10.0.0.12', :cpus => 1, :memory => 1024 },
 	{ :name => 'os-neutron-01',	:management_ip => '10.0.0.21', :cpus => 1, :memory =>  512, :tunnel_ip => '10.0.1.21', :external_net => true },
 	{ :name => 'os-nova-01', 	:management_ip => '10.0.0.31', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.31' },
 	{ :name => 'os-nova-02',	:management_ip => '10.0.0.41', :cpus => 2, :memory => 2048, :tunnel_ip => '10.0.1.41' },
