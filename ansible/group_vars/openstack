@@ -1,3 +1,4 @@
 ---
 openstack_database_node_name: os-db-01
+openstack_message_queue_node_name: os-mq-01
 openstack_controller_node_name: os-ctrl-01
