@@ -1,6 +1,9 @@
 [os-db]
 os-db-01
 
+[os-mq]
+os-mq-01
+
 [os-controller]
 os-ctrl-01
 
@@ -12,6 +15,7 @@ os-nova-0[1:2]
 
 [openstack:children]
 os-db
+os-mq
 os-controller
 os-network
 os-compute
