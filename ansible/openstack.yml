@@ -2,6 +2,9 @@
 - hosts: os-db
   roles:
   - role: os-db
+- hosts: os-mq
+  roles:
+  - role: rabbitmq
 - hosts: os-controller
   roles:
   - role: os-controller
